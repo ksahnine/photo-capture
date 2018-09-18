@@ -1,0 +1,45 @@
+version: '3'
+services:
+
+  # Loadbalancer
+  web:
+    image: ksahnine/photo-capture-app:0.0.1
+    container_name: web-1
+    ports:
+      - "80:80"
+    depends_on:
+      - api
+    networks:
+      - app-network
+
+  # Api
+  api:
+    image: node:7.7.2-alpine
+    container_name: api-node
+    ports:
+      - 3000:3000
+    working_dir: /usr/app
+    volumes:
+      - .:/usr/app
+    depends_on:
+      - mongodb
+    command: sh -c "cd back; npm i && npm start"
+    networks:
+      - app-network
+  
+  
+  # MongoDB
+  mongodb:
+    image: mongo
+    container_name: api-mongodb
+    ports:
+      - 27017:27017
+    volumes:
+      - ./mongodb-data:/data/db
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
