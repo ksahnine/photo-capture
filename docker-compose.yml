@@ -14,16 +14,12 @@ services:
 
   # Api
   api:
-    image: node:7.7.2-alpine
+    image: ksahnine/photo-capture-api:0.0.1
     container_name: api-node
     ports:
       - 3000:3000
-    working_dir: /usr/app
-    volumes:
-      - .:/usr/app
     depends_on:
       - mongodb
-    command: sh -c "cd back; npm i && npm start"
     networks:
       - app-network
   
